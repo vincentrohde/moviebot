@@ -66,6 +66,6 @@ module.exports = function(controller) {
     });
 
     controller.hears(new RegExp(/.+/s), 'message,direct_message', async(bot, message) => {
-        await bot.reply(message, 'Hey ho');
+        await bot.reply(message, 'Kann ich noch was für dich tun?');
     });
 }
