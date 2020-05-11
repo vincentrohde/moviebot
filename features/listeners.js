@@ -65,6 +65,11 @@ module.exports = function(controller) {
         }
     });
 
+    controller.hears(['7'],'message,direct_message', async(bot, message) => {
+        const random = Math.round(Math.random());
+        await bot.reply(message, String(random));
+    });
+
     controller.hears(new RegExp(/.+/s), 'message,direct_message', async(bot, message) => {
         await bot.reply(message, 'Kann ich noch was für dich tun?');
     });
