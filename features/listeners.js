@@ -5,30 +5,46 @@
 
 const movieController = require('../src/controllers/MovieController');
 const requestError = 'Ich kann aktuell leider nichts finden 🙁';
+let messageId = '';
+
+const isMultiEventTrigger = (message) => {
+    if (messageId === message.incoming_message.id) {
+        return true;
+    }
+
+    messageId = message.incoming_message.id;
+    return false;
+}
 
 module.exports = function(controller) {
 
-    controller.hears('Hallo','message,direct_message', async(bot, message) => {
+    controller.hears('Hallo','message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Hi, wie kann ich dir helfen?');
     });
 
-    controller.hears(['Wie heißt du?'],'message,direct_message', async(bot, message) => {
+    controller.hears(['Wie heißt du?'],'message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, '');
     });
 
-    controller.hears(['nichts', 'nix'],'message,direct_message', async(bot, message) => {
+    controller.hears(['nichts', 'nix'],'message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Okay');
     });
 
-    controller.hears('Danke','message,direct_message', async(bot, message) => {
+    controller.hears('Danke','message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Gern geschehen');
     });
 
-    controller.hears(['Wie geht\'s', 'Was läuft', 'Wie geht es dir'],'message,direct_message', async(bot, message) => {
+    controller.hears(['Wie geht\'s', 'Was läuft', 'Wie geht es dir'],'message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Mir gehts super 🥰');
     });
 
-    controller.hears(['genre', 'genres'],'message,direct_message', async(bot, message) => {
+    controller.hears(['genre', 'genres'],'message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         try {
             const genres = await movieController.getMovieGenres();
             await bot.reply(message, String(`
@@ -39,8 +55,8 @@ module.exports = function(controller) {
         }
     });
 
-    controller.hears('film','message,direct_message', async (bot, message) => {
-
+    controller.hears('film','message', async (bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         try {
             const { data } = await movieController.getRandomMovie(message.text);
 
@@ -65,12 +81,13 @@ module.exports = function(controller) {
         }
     });
 
-    controller.hears(['7'],'message,direct_message', async(bot, message) => {
+    controller.hears(['7'],'message', async(bot, message) => {
+        if (isMultiEventTrigger(message)) { return; }
         const random = Math.round(Math.random());
         await bot.reply(message, String(random));
     });
 
-    controller.hears(new RegExp(/.+/s), 'message,direct_message', async(bot, message) => {
-        await bot.reply(message, 'Kann ich noch was für dich tun?');
-    });
+    // controller.hears(new RegExp(/.+/s), 'message,direct_message', async(bot, message) => {
+    //     await bot.reply(message, 'Kann ich noch was für dich tun?');
+    // });
 }
