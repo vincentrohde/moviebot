@@ -18,32 +18,32 @@ const isMultiEventTrigger = (message) => {
 
 module.exports = function(controller) {
 
-    controller.hears('Hallo','message', async(bot, message) => {
+    controller.hears('Hallo','direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Hi, wie kann ich dir helfen?');
     });
 
-    controller.hears(['Wie heißt du?'],'message', async(bot, message) => {
+    controller.hears(['Wie heißt du?'],'direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, '');
     });
 
-    controller.hears(['nichts', 'nix'],'message', async(bot, message) => {
+    controller.hears(['nichts', 'nix'],'direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Okay');
     });
 
-    controller.hears('Danke','message', async(bot, message) => {
+    controller.hears('Danke','direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Gern geschehen');
     });
 
-    controller.hears(['Wie geht\'s', 'Was läuft', 'Wie geht es dir'],'message', async(bot, message) => {
+    controller.hears(['Wie geht\'s', 'Was läuft', 'Wie geht es dir'],'direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         await bot.reply(message, 'Mir gehts super 🥰');
     });
 
-    controller.hears(['genre', 'genres'],'message', async(bot, message) => {
+    controller.hears(['genre', 'genres'],'direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         try {
             const genres = await movieController.getMovieGenres();
@@ -55,7 +55,7 @@ module.exports = function(controller) {
         }
     });
 
-    controller.hears('film','message', async (bot, message) => {
+    controller.hears('film','direct_message', async (bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         try {
             const { data } = await movieController.getRandomMovie(message.text);
@@ -81,7 +81,7 @@ module.exports = function(controller) {
         }
     });
 
-    controller.hears(['7'],'message', async(bot, message) => {
+    controller.hears(['7'],'direct_message', async(bot, message) => {
         if (isMultiEventTrigger(message)) { return; }
         const random = Math.round(Math.random());
         await bot.reply(message, String(random));
